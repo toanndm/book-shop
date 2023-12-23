@@ -1,4 +1,5 @@
 ﻿using Book.DataAccess.Data;
+using Book.DataAccess.Repository.IRepository;
 using Book.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,14 +7,14 @@ namespace Book.DataAccess.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            _db = db;
+            _categoryRepository = categoryRepository;
         }
         public IActionResult Index()
         {
-            List<Category> categories = _db.Categories.ToList();
+            List<Category> categories = _categoryRepository.GetAll().ToList();
             return View(categories);
         }
         public IActionResult Create()
@@ -25,8 +26,8 @@ namespace Book.DataAccess.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
+                _categoryRepository.Add(obj);
+                _categoryRepository.Save();
                 TempData["success"] = "Category created successfully!";
                 return RedirectToAction("Index");
             }
@@ -38,7 +39,7 @@ namespace Book.DataAccess.Controllers
             {
                 return NotFound();
             }
-            Category? category = _db.Categories.Find(id);
+            Category? category = _categoryRepository.Get(u => u.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -51,8 +52,8 @@ namespace Book.DataAccess.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
+                _categoryRepository.Update(obj);
+                _categoryRepository.Save();
                 TempData["success"] = "Category updated successfully!";
                 return RedirectToAction("Index");
             }
@@ -65,13 +66,13 @@ namespace Book.DataAccess.Controllers
             {
                 return NotFound();
             }
-            Category? category = _db.Categories.Find(id);
+            Category? category = _categoryRepository.Get(u => u.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
-            _db.Categories.Remove(category);
-            _db.SaveChanges();
+            _categoryRepository.Remove(category);
+            _categoryRepository.Save();
             TempData["success"] = "Category deleted successfully!";
             return RedirectToAction("Index");
         }
