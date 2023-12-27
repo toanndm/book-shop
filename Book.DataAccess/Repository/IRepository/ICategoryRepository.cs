@@ -10,7 +10,6 @@ namespace Book.DataAccess.Repository.IRepository
 {
     public interface ICategoryRepository : IRepository<Category>
     {
-        public void Save();
         public void Update(Category category);
     }
 }
