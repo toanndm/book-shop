@@ -13,7 +13,7 @@ namespace Book.DataAccess.Repository
         }
         public void Update(Category category)
         {
-            _db.Update(category);
+            _db.Categories.Update(category);
         }
     }
 }
