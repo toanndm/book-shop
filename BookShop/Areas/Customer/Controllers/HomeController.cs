@@ -22,7 +22,11 @@ namespace BookShop.Areas.Customer.Controllers
             IEnumerable<Product> products = _unitOfWork.Product.GetAll(includeProp:"Category");
             return View(products);
         }
-
+        public IActionResult Details(int id)
+        {
+            Product product = _unitOfWork.Product.Get(u => u.Id == id, includeProp: "Category");
+            return View(product);
+        }
         public IActionResult Privacy()
         {
             return View();
