@@ -74,14 +74,14 @@ namespace BookShop.Areas.Admin.Controllers
                 if (obj.Id == 0)
                 {
                     _unitOfWork.Product.Add(obj);
-                    TempData["success"] = "Product created successfully!";
                 }
                 else
                 {
                     _unitOfWork.Product.Update(obj);
-                    TempData["success"] = "Product updated successfully!";
+                    
                 }
                 _unitOfWork.Save();
+                TempData["success"] = "Product updated successfully!";
                 return RedirectToAction("Index");
             }
             else
